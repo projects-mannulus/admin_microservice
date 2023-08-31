@@ -30,7 +30,8 @@ jobs:
       - name: Maven Install and Package
         run: |
           ./mvnw install --file pom.xml
-          cd target
+          echo "Comprimiendo archivos..."
+          tar -czf ${{ github.sha }}.tgz target/
 
       - name: Load to Server
         uses: appleboy/scp-action@v0.1.4
@@ -38,7 +39,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: target/${{ env.jarFileName }}
+          source: ${{ github.sha }}.tgz
           target: ~/backend/${{ env.folder_project }}
 
       - name: Deploy on Server
@@ -48,4 +49,8 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            cd ~/backend/${{ env.folder_project }}
+            echo "Descomprimiendo archivos..."
+            tar -xzf ${{ github.sha }}.tgz --strip-components=1
+            rm ${{ github.sha }}.tgz
             java -jar ~/backend/${{ env.folder_project }}/${{ env.jarFileName }} > ~/backend/${{ env.folder_project }}/log.txt &

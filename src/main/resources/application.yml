@@ -11,4 +11,8 @@ spring:
     hibernate:
       ddl-auto: create-drop
 server:
+  #port to deploy the application
   port: 8090
+  #url path to deploy the application
+  servlet:
+    context-path: /

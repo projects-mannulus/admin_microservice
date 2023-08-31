@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  application_properties: ${{ secrets.properties_admin_microservice }}/src/main/resources/application.yml
+  application_properties: ${{ secrets.properties_admin_microservice }}
   jarFileName: admin-0.0.1-SNAPSHOT.jar
   folder_project: sc-admin
 
@@ -25,10 +25,12 @@ jobs:
 
       - name: Config application.yml
         run: |
-          echo "${{ env.application_properties }}" > $GITHUB_WORKSPACE/src/main/resources/application.yml
+          echo "${{ env.application_properties }}" > ./src/main/resources/application.yml
 
       - name: Maven Install and Package
-        run: ./mvnw install --file pom.xml
+        run: |
+          ./mvnw install --file pom.xml
+          cd target
 
       - name: Load to Server
         uses: appleboy/scp-action@v0.1.4

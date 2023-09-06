@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import com.iot.admin.admin.dto.DeviceDetails;
+import com.iot.admin.admin.dto.DeviceDetailDTO;
 import com.iot.admin.admin.dto.DeviceForm;
 import com.iot.admin.admin.dto.DeviceResourcePropertyForm;
 import com.iot.admin.admin.dto.PropertyDetails;
@@ -35,35 +35,35 @@ public class DeviceController {
     private DeviceService service;
 
     @GetMapping
-    public List<DeviceDetails> list(){       
+    public List<DeviceDetailDTO> list(){
         return service.findAll();
     }
 
     @GetMapping("pageable")
     public Map<String,Object> page_list(@RequestParam Map<String,String> params){
-        Page<DeviceDetails> data = service.paginate(params);
+        Page<DeviceDetailDTO> data = service.paginate(params);
         Map<String,Object> result= Pagination.mapPage(data);
         return result;
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public DeviceDetails create(@RequestBody @Valid DeviceForm data){        
+    public DeviceDetailDTO create(@RequestBody @Valid DeviceForm data){
         return service.create(data);
     }
 
     @GetMapping("/{id}")
-    public DeviceDetails findById(@PathVariable Long id){
+    public DeviceDetailDTO findById(@PathVariable Long id){
         return service.findById(id);
     }
 
     @GetMapping("/gateway/{id}")
-    public DeviceDetails getGatewayRepresentation(@PathVariable Long id){
+    public DeviceDetailDTO getGatewayRepresentation(@PathVariable Long id){
         return service.findById(id);
     }
 
     @PutMapping("/{id}")
-    public DeviceDetails update(@RequestBody @Valid DeviceForm formData, @PathVariable Long id){
+    public DeviceDetailDTO update(@RequestBody @Valid DeviceForm formData, @PathVariable Long id){
         return service.update(formData, id);
     }
 

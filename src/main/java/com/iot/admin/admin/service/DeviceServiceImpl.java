@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.iot.admin.admin.dto.DeviceDetails;
+import com.iot.admin.admin.dto.DeviceDetailDTO;
 import com.iot.admin.admin.dto.DeviceForm;
 import com.iot.admin.admin.dto.DeviceResourcePropertyForm;
 import com.iot.admin.admin.dto.PropertyDetails;
@@ -20,6 +20,7 @@ import com.iot.admin.admin.entity.Device;
 import com.iot.admin.admin.entity.Property;
 import com.iot.admin.admin.entity.Resource;
 import com.iot.admin.admin.errors.FieldException;
+import com.iot.admin.admin.mappers.DeviceMapper;
 import com.iot.admin.admin.repository.DeviceRepository;
 import com.iot.admin.admin.repository.PropertyRepository;
 import com.iot.admin.admin.repository.ResourceRepository;
@@ -61,11 +62,10 @@ public class DeviceServiceImpl implements DeviceService {
 
 
     @Override
-    public DeviceDetails create(DeviceForm formData) {
+    public DeviceDetailDTO create(DeviceForm formData) {
         // Validates device fields.
         validateFields(formData);
         Device device = formData.getEntity();
-        DeviceDetails device_detail = new DeviceDetails();
         List<Device> devices = repository.findAll();
         Long new_id;
         if(devices.size()>0){
@@ -80,7 +80,7 @@ public class DeviceServiceImpl implements DeviceService {
             device.setDeviceParent(deviceParent);
         }    
         device = repository.save(device);
-        device_detail.setEntity(device);
+        DeviceDetailDTO device_detail = DeviceMapper.INSTANCE.toDeviceDetailDTO(device);
         //Synchronize Device
         Device deviceParent = device.getDeviceParent();        
         if(deviceParent!=null){
@@ -98,13 +98,12 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public List<DeviceDetails> findAll() {
+    public List<DeviceDetailDTO> findAll() {
         Iterable<Device> list_devices = repository.findByDeviceParent(null);
-        List<DeviceDetails> list_details = new ArrayList<>();
+        List<DeviceDetailDTO> list_details = new ArrayList<>();
 
         list_devices.forEach(device -> {
-            DeviceDetails details = new DeviceDetails();
-            details.setEntity(device);
+            DeviceDetailDTO details =DeviceMapper.INSTANCE.toDeviceDetailDTO(device);
             list_details.add(details);
         });
 
@@ -112,37 +111,34 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public DeviceDetails findById(Long id) {
+    public DeviceDetailDTO findById(Long id) {
         Device device = repository.getById(id);
-        DeviceDetails details = new DeviceDetails();
-        details.setEntity(device);
+        DeviceDetailDTO details = DeviceMapper.INSTANCE.toDeviceDetailDTO(device);
         return details;
     }
 
     @Override
-    public Page<DeviceDetails> paginate(Map<String,String> params) {
+    public Page<DeviceDetailDTO> paginate(Map<String,String> params) {
         Pageable pageRequest = Pagination.pageRequest(params);
         Page<Device> device_list = repository.findAll(pageRequest);
-        List<DeviceDetails> deviceDetails = new ArrayList<>();
+        List<DeviceDetailDTO> deviceDetails = new ArrayList<>();
         for(Device d: device_list.getContent()){
-            DeviceDetails device_details = new DeviceDetails();
-            device_details.setEntity(d);
+            DeviceDetailDTO device_details = DeviceMapper.INSTANCE.toDeviceDetailDTO(d);
             deviceDetails.add(device_details);
         }
-        Page<DeviceDetails> pageResult = new PageImpl<>(deviceDetails, pageRequest, device_list.getTotalElements());
+        Page<DeviceDetailDTO> pageResult = new PageImpl<>(deviceDetails, pageRequest, device_list.getTotalElements());
         return pageResult;
     }
 
 
     
     @Override
-    public DeviceDetails update(DeviceForm formData, Long id) {
+    public DeviceDetailDTO update(DeviceForm formData, Long id) {
         //New Tag validation.
         validateFields(formData);        
         Device device = repository.getById(id);       
         formData.setEntity(device);
-        DeviceDetails device_detail = new DeviceDetails();
-        device_detail.setEntity(repository.save(device));
+        DeviceDetailDTO device_detail = DeviceMapper.INSTANCE.toDeviceDetailDTO(repository.save(device));
         return device_detail;       
     }
 

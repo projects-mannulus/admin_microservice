@@ -3,7 +3,7 @@ package com.iot.admin.admin.service;
 import java.util.List;
 import java.util.Map;
 
-import com.iot.admin.admin.dto.DeviceDetails;
+import com.iot.admin.admin.dto.DeviceDetailDTO;
 import com.iot.admin.admin.dto.DeviceForm;
 import com.iot.admin.admin.dto.DeviceResourcePropertyForm;
 import com.iot.admin.admin.dto.PropertyDetails;
@@ -18,7 +18,7 @@ public interface DeviceService {
      * 
      * @param formData device data to save
      */
-    DeviceDetails create(DeviceForm formData);
+    DeviceDetailDTO create(DeviceForm formData);
 
 
     /**
@@ -26,27 +26,27 @@ public interface DeviceService {
      *Return list of devices created by pagination
      *@return
     */
-    Page<DeviceDetails> paginate(Map<String,String> params);
+    Page<DeviceDetailDTO> paginate(Map<String,String> params);
 
     /**
      * 
      *Return list of devices created
-     *@return {@link DeviceDetails}
+     *@return {@link DeviceDetailDTO}
     */
-    List<DeviceDetails> findAll();
+    List<DeviceDetailDTO> findAll();
 
     /**
      * Returns a device by ID.
      * @return
      */
-    DeviceDetails findById(Long id);
+    DeviceDetailDTO findById(Long id);
 
     /**
      * 
      * @param fromData data from form
      * @param id is the current device id
      */
-    DeviceDetails update(DeviceForm fromData, Long id);
+    DeviceDetailDTO update(DeviceForm fromData, Long id);
 
     /**
      * Delete a device by id from database. Throws a exception if it doesn't 

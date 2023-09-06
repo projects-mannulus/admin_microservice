@@ -59,4 +59,4 @@ jobs:
             tar -xzf ${{ env.folder_project }}.tgz --strip-components=1
             rm ${{ env.folder_project }}.tgz
             echo "Iniciando proceso..."
-            java -jar ~/backend/${{ env.folder_project }}/${{ env.jarFileName }} > ~/backend/${{ env.folder_project }}/log.txt &
+            java -jar ~/backend/${{ env.folder_project }}/${{ env.jarFileName }} > ~/backend/${{ env.folder_project }}/log.txt 2>&1 &

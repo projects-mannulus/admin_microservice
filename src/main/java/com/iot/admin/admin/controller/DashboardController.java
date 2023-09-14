@@ -31,11 +31,7 @@ public class DashboardController {
     @GetMapping("grid")
     public ResponseEntity<?> getGridByUser(@RequestHeader("idUser") Long userid) {
         var gridDashboard = gridDashboardServiceImpl.findByUserId(userid);
-        if (gridDashboard == null) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(gridDashboard, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(gridDashboard, HttpStatus.OK);
     }
 
     @PutMapping("grid")

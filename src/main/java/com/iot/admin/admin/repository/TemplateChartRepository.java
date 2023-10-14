@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface TemplateChartRepository extends JpaRepository<TemplateChart, Long> {
 
-    List<TemplateChart> findAllByUserId(Long userId);
+    List<TemplateChart> findAllByUserId(String userId);
 
 }

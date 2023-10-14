@@ -12,7 +12,4 @@ public interface TemplateMapper {
 
     TemplateChartDTO toTemplateChartDTO(TemplateChart templateChart);
 
-    @Mapping(target = "data", ignore = true)
-    TemplateChartDTO toTemplateChartDTOWithoutData(TemplateChart templateChart);
-
 }

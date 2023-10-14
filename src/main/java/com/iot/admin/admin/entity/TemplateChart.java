@@ -12,6 +12,7 @@ import java.io.Serializable;
  */
 @Data
 @Entity
+@Table(name = "template_chart")
 @AllArgsConstructor
 @NoArgsConstructor
 public class TemplateChart implements Serializable {
@@ -20,8 +21,8 @@ public class TemplateChart implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private Long userId;
+    @Column(name = "USER_ID")
+    private String userId;
 
     /**
      * nombre del template

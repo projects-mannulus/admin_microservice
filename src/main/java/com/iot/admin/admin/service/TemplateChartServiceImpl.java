@@ -13,7 +13,7 @@ public class TemplateChartServiceImpl implements ITemplateService {
     @Autowired
     private TemplateChartRepository templateChartRepository;
     @Override
-    public List<TemplateChart> getTemplateByUser(Long idUser) {
+    public List<TemplateChart> getTemplateByUser(String idUser) {
         return templateChartRepository.findAllByUserId(idUser);
     }
 

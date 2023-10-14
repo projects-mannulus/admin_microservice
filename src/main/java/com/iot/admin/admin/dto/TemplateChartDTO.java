@@ -11,7 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class TemplateChartDTO implements Serializable {
     private Long id;
-    private Long userId;
+    private String userId;
     private String name;
     private String data;
 }

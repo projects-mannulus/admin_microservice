@@ -9,6 +9,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class GridDashboardDTO implements Serializable {
     private Long id;
-    private Long userId;
+    private String name;
+    private String userId;
     private String data;
 }

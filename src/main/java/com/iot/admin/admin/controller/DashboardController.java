@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("dashboard")
 public class DashboardController {
@@ -29,11 +32,18 @@ public class DashboardController {
      * @return
      */
     @GetMapping("grid")
-    public ResponseEntity<?> getGridByUser(@RequestHeader("idUser") Long userid) {
-        var gridDashboard = gridDashboardServiceImpl.findByUserId(userid);
+    public ResponseEntity<?> getGridByUser(@RequestHeader("idUser") String userid) {
+        List<GridDashboardDTO> gridDashboard = gridDashboardServiceImpl.findByUserId(userid)
+                .stream().map(GridDashbaordMapper.INSTANCE::toGridDashboardDTO)
+                .collect(Collectors.toList());
         return new ResponseEntity<>(gridDashboard, HttpStatus.OK);
     }
 
+    /**
+     * Guarda la informacion del panel de control de un usuario.
+     * @param gridsterDashbaord
+     * @return
+     */
     @PutMapping("grid")
     public ResponseEntity<?> createTemplate(@RequestBody GridDashboardDTO gridsterDashbaord) {
         return new ResponseEntity<>(GridDashbaordMapper.INSTANCE.toGridDashboardDTO(
@@ -50,7 +60,7 @@ public class DashboardController {
      * @return
      */
     @GetMapping("template/all")
-    public ResponseEntity<?> getAllTemplatesByUser(@RequestHeader("idUser") Long idUser,
+    public ResponseEntity<?> getAllTemplatesByUser(@RequestHeader("idUser") String idUser,
                                                    @RequestParam(value = "search", required = false) String search) {
         return new ResponseEntity<>(
                 templateChartServiceImpl.getTemplateByUser(idUser).stream()

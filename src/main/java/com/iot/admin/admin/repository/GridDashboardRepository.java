@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface GridDashboardRepository extends JpaRepository<GridDashboard, Long> {
 
-    List<GridDashboard> findAllByUserId(Long userId);
+    List<GridDashboard> findAllByUserId(String userId);
 }

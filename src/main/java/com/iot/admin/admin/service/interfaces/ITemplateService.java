@@ -5,7 +5,7 @@ import com.iot.admin.admin.entity.TemplateChart;
 import java.util.List;
 
 public interface ITemplateService {
-    List<TemplateChart> getTemplateByUser(Long userId);
+    List<TemplateChart> getTemplateByUser(String userId);
 
     TemplateChart getTemplateById(Long idTemplate);
 
